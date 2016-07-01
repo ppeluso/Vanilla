@@ -236,3 +236,72 @@ void short_put_spread()
     
     
 }
+
+double callImpliedVol( double S, double K, double T, double r, double value)
+{
+    double bs; 
+    double tester; 
+    double hold
+    double impliedVol = 0;
+    for (double i = 0; i < 3; i+= .01)
+    {
+    
+        bs = call_price(S,K,r,i,T)
+
+        if( bs + .05 > value && bs - .05 < value)
+        {
+            hold = i; 
+        }
+
+        if(abs(value - bs) < abs(value - call_price(S,K,r,impliedVol,T)) )
+        {
+            impliedVol = hold; 
+        }
+    } 
+    return impliedVol; 
+}  
+
+double putImpliedVol( double S, double K, double T, double r, double value)
+{
+
+    double bs; 
+    double tester; 
+    double hold
+    double impliedVol = 0;
+    for (double i = 0; i < 3; i+= .01)
+    {
+    
+        bs = put_price(S,K,r,i,T)
+
+        if( bs + .05 > value && bs - .05 < value)
+        {
+            hold = i; 
+        }
+
+        if(abs(value - bs) < abs(value - put_price(S,K,r,impliedVol,T)) )
+        {
+            impliedVol = hold; 
+        }
+    } 
+
+
+    return impliedVol;
+} 
+
+void impliedVolSmile(double S, double K, double r, double T, double increment, char corp, std::string txt)
+{
+    corp = toupper(corp);
+
+    std::ifstream in;
+    in.open(txt);
+    std::string value;
+
+
+    if (corp == 'C')
+    {
+        for( int i = S - (increment * 5) < i <= S +(increment * 5); i += increment)
+        {
+            callImpliedVol(S,K,T,)
+        }
+    }
+}

@@ -63,7 +63,9 @@ void short_call_spread();
 
 void short_put_spread();
 
-    
+double callImpliedVol( double S, double K, double T, double r, double value);
+
+double putImpliedVol( double S, double K, double T, double r, double value);
 
 #endif /* option_pricing_hpp */
 
