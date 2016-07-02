@@ -5,7 +5,7 @@
 //  Created by Peter Peluso on 5/20/16.
 //  Copyright © 2016 Peter Peluso. All rights reserved.
 //
-
+#include <string>
 #ifndef option_pricing_hpp
 #define option_pricing_hpp
 
@@ -66,6 +66,7 @@ void short_put_spread();
 double callImpliedVol( double S, double K, double T, double r, double value);
 
 double putImpliedVol( double S, double K, double T, double r, double value);
+void impliedVolSmile(double S, double K, double r, double T, double increment, char corp, std::string txt);
 
 #endif /* option_pricing_hpp */
 

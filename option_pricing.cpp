@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <fstream>
+#include <string>
 double gaussian_box_muller()
 {
     double x = 0.0;
