@@ -239,69 +239,104 @@ void short_put_spread()
 
 double callImpliedVol( double S, double K, double T, double r, double value)
 {
-    double bs; 
-    double tester; 
-    double hold
+    double bs;
+    double hold = 0;
     double impliedVol = 0;
     for (double i = 0; i < 3; i+= .01)
     {
-    
-        bs = call_price(S,K,r,i,T)
-
-        if( bs + .05 > value && bs - .05 < value)
+        
+        bs = call_price(S,K,r,i,T);
+        
+        if( fabs(bs - value) < 1)
         {
-            hold = i; 
+            hold = i;
         }
-
-        if(abs(value - bs) < abs(value - call_price(S,K,r,impliedVol,T)) )
+        
+        if(std::fabs(value - bs) < std::fabs(value - call_price(S,K,r,impliedVol,T)) )
+            
         {
-            impliedVol = hold; 
+            impliedVol = hold;
         }
-    } 
-    return impliedVol; 
-}  
+    }
+    return impliedVol;
+}
 
 double putImpliedVol( double S, double K, double T, double r, double value)
 {
-
-    double bs; 
-    double tester; 
-    double hold
-    double impliedVol = 0;
-    for (double i = 0; i < 3; i+= .01)
-    {
     
-        bs = put_price(S,K,r,i,T)
-
-        if( bs + .05 > value && bs - .05 < value)
+    double bs;
+    double hold = 0.0;
+    double impliedVol = 0;
+    for (double i = 0; i < 3; i+= .001)
+    {
+        
+        bs = put_price(S,K,r,i,T);
+        
+        if( fabs(bs - value) < 1)
         {
-            hold = i; 
+            hold = i;
         }
-
-        if(abs(value - bs) < abs(value - put_price(S,K,r,impliedVol,T)) )
+        
+        if(std::fabs(value - bs) < std::fabs(value - put_price(S,K,r,impliedVol,T)) )
         {
-            impliedVol = hold; 
+            impliedVol = hold;
         }
-    } 
-
-
+    }
+    
+    
     return impliedVol;
-} 
+}
 
 void impliedVolSmile(double S, double K, double r, double T, double increment, char corp, std::string txt)
 {
     corp = toupper(corp);
-
-    std::ifstream in;
-    in.open(txt);
-    std::string value;
-
-
+    
+    double price;
+    double value;
+    std::vector <double> vol;
+    std::vector <double> strike;
+    
+    
     if (corp == 'C')
     {
-        for( int i = S - (increment * 5) < i <= S +(increment * 5); i += increment)
+        for( int i = S - (increment * 2) ; i <= S +(increment * 2); i += increment)
         {
-            callImpliedVol(S,K,T,)
+            std::cout<<"enter price for call with strike "<< i<<std::endl;
+            std::cin >>value;
+            price = callImpliedVol(S,K,T,r,value);
+            std::cin.clear();
+            vol.push_back(price);
+            strike.push_back(i);
+            
         }
     }
+    
+    if (corp == 'P')
+    {
+        for( int i = S - (increment * 2) ; i <= S +(increment * 2); i += increment)
+        {
+            std::cout<<"enter price for put with strike "<< i<<std::endl;
+            std::cin >> value;
+            price = putImpliedVol(S,K,T,r,value);
+            std::cin.clear();
+            vol.push_back(price);
+            strike.push_back(i);
+            
+        }
+    }
+    
+    std::ofstream myfile;
+    myfile.open ("volsmile.csv");
+    myfile << "Strike,Implied Volatility \n";
+    
+    for(int i = 0; i < vol.size() -1; i++)
+    {
+        myfile <<strike.at(i)<<","<<vol.at(i)<<'\n';
+        
+    }
+    
+    myfile.close();
+    
+    
+    
 }
