@@ -42,3 +42,25 @@ implied.vol <-
       return(sig)
     }
   }
+
+impVolSmile <- c()
+impVolSmileStrike <- c()
+for(i in 1:61)
+{
+  impVolSmile[i] <- implied.vol(2102.95, SPX_option.$Strike[i], 12.0/252.0, .017, SPX_option.$Last[i], "C")
+  impVolSmileStrike[i] <- SPX_option.$Strike[i]
+  
+}
+
+TOSiv <- c()
+TOSiv <- as.numeric(sub("%","",SPX_option.$IV))/100
+
+
+plot(impVolSmileStrike,impVolSmile, type = "l", col = "blue", xlab = "SPX Strike", ylab = "Implied Volatility", main = "SPX JUL 16 Call Options")
+lines(SPX_option.$Strike,TOSiv, col = "green")
+
+ f <-qplot( impVolSmileStrike, impVolSmile)
+ print (f)
+ 
+
+
