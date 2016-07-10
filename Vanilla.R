@@ -54,13 +54,24 @@ for(i in 1:61)
 
 TOSiv <- c()
 TOSiv <- as.numeric(sub("%","",SPX_option.$IV))/100
+rallyiv <- c()
+rallyiv <-  as.numeric(sub("%","",rally$Impl.Vol))/100
 
 
-plot(impVolSmileStrike,impVolSmile, type = "l", col = "blue", xlab = "SPX Strike", ylab = "Implied Volatility", main = "SPX JUL 16 Call Options")
-lines(SPX_option.$Strike,TOSiv, col = "green")
+#f <- ggplot( data.frame(impVolSmileStrike, impVolSmile), aes(impVolSmileStrike, impVolSmile))
 
- f <-qplot( impVolSmileStrike, impVolSmile)
- print (f)
- 
-
+# print(f + geom_line( color="red") +geom_line(aes(y = TOSiv), colour="green")  )
+call_vol <- c()
+put_vol <- c()
+call_vol<- as.numeric(sub("%","",SPX_JUL17_0705$CALL_ImpVol))/100
+put_vol <- as.numeric(sub("%","",SPX_JUL17_0705$PUT_ImpVol))/100
+put_vol <- put_vol[!is.na(put_vol)]
+rallyiv<- rallyiv[-length(rallyiv)]
+call <- factor(c("call","put"))
+# callgraph <- ggplot(data.frame(SPX_JUL17_0705$Strike,call_vol), aes(SPX_JUL17_0705$Strike ,call_vol))
+# print(callgraph + geom_line(colour = "green") +
+#         geom_line(aes(y = rallyiv)) +
+#         labs(list(title = "Implied Volatility of SPX July Options", x = "Strike", y = "Implied Volatility")))
+plot(spx, put_vol, type = "l",col = "red", xlab = "Strike", ylab = "Implied Volatility",main = "SPX Volatility Smile")    
+lines(spx,rallyiv, type = "l", col = "green")
 
